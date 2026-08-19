@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Maxicash\Tests;
+namespace Ngandu\Maxicash\Tests;
 
-use Devscast\Maxicash\Credential;
-use Devscast\Maxicash\Data\Currency;
-use Devscast\Maxicash\Data\Language;
-use Devscast\Maxicash\Data\PayType;
-use Devscast\Maxicash\PaymentEntry;
 use InvalidArgumentException;
+use Ngandu\Maxicash\Credential;
+use Ngandu\Maxicash\Data\Currency;
+use Ngandu\Maxicash\Data\Language;
+use Ngandu\Maxicash\Data\PayType;
+use Ngandu\Maxicash\PaymentEntry;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class PaymentEntryTest.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final class PaymentEntryTest extends TestCase
 {

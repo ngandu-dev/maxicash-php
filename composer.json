@@ -1,5 +1,5 @@
 {
-    "name": "devscast/maxicash",
+    "name": "ngandu-dev/maxicash",
     "description": "The MaxiCash integration platform enables merchants to integrate with the MaxiCash platform to receive payments via their mobile applications or websites. The API uses JSON to interact with .Net or open source platforms such as PHP.",
     "keywords": [
         "maxicash",
@@ -9,33 +9,32 @@
     ],
     "type": "library",
     "license": "MIT",
+    "homepage": "https://github.com/ngandu-dev/maxicash-php",
     "autoload": {
         "psr-4": {
-            "Devscast\\Maxicash\\": "src/"
+            "Ngandu\\Maxicash\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Devscast\\Maxicash\\Tests\\": "tests/"
+            "Ngandu\\Maxicash\\Tests\\": "tests/"
         }
     },
     "authors": [
         {
             "name": "bernard-ng",
-            "email": "bernard@devscast.tech"
+            "email": "bernard@ngandu.dev"
         }
     ],
+    "support": {
+        "issues": "https://github.com/ngandu-dev/maxicash-php/issues",
+        "source": "https://github.com/ngandu-dev/maxicash-php"
+    },
     "minimum-stability": "stable",
     "require": {
         "php": ">=8.4",
         "webmozart/assert": "^1.11"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/devscast/maxicash"
-        }
-    ],
     "require-dev": {
         "symfony/var-dumper": "^7.0|^8.0",
         "rector/rector": "^2.3",
@@ -43,5 +42,12 @@
         "phpstan/phpstan-phpunit": "^2.0",
         "phpunit/phpunit": "^13.0",
         "symplify/easy-coding-standard": "^13.0"
+    },
+    "scripts": {
+        "format": ["php vendor/bin/ecs check --fix --ansi", "php vendor/bin/rector process --ansi"],
+        "lint": ["php vendor/bin/ecs check --ansi", "php vendor/bin/rector process --dry-run --ansi"],
+        "typecheck": "php vendor/bin/phpstan analyse --ansi",
+        "test": "php vendor/bin/phpunit --colors=always",
+        "quality": ["@lint", "@typecheck", "@test"]
     }
 }

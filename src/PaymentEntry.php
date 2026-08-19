@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Maxicash;
+namespace Ngandu\Maxicash;
 
-use Devscast\Maxicash\Data\Currency;
-use Devscast\Maxicash\Data\Language;
-use Devscast\Maxicash\Data\PayType;
 use JsonException;
+use Ngandu\Maxicash\Data\Currency;
+use Ngandu\Maxicash\Data\Language;
+use Ngandu\Maxicash\Data\PayType;
 use Webmozart\Assert\Assert;
 
 /**
@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
  *
  * @see https://developer.maxicashapp.com/
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final readonly class PaymentEntry
 {

@@ -1,18 +1,24 @@
 .DEFAULT_GOAL := help
+.PHONY: help format lint typecheck test quality
 
-# -----------------------------------
-# Recipes
-# -----------------------------------
-.PHONY: help
-help: ## affiche cet aide
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+help:
+	@echo "format     Fix code style and automated refactors"
+	@echo "lint       Check code style and automated refactors"
+	@echo "typecheck  Run static analysis"
+	@echo "test       Run the test suite"
+	@echo "quality    Run all non-modifying checks"
 
-.PHONY: lint
-lint: ## affiche les erreurs de formatage de code
-	php vendor/bin/ecs
-	php vendor/bin/phpstan
-	php vendor/bin/rector --dry-run
+format:
+	composer format
 
-.PHONY: test
-test: ## lance les tests
-	php vendor/bin/phpunit
+lint:
+	composer lint
+
+typecheck:
+	composer typecheck
+
+test:
+	composer test
+
+quality:
+	composer quality

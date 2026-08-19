@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Maxicash;
+namespace Ngandu\Maxicash;
 
 use SensitiveParameter;
 use Webmozart\Assert\Assert;
@@ -12,7 +12,7 @@ use Webmozart\Assert\Assert;
  *
  * @see info@maxicashapp.com
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final readonly class Credential
 {

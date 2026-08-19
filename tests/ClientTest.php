@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Maxicash\Tests;
+namespace Ngandu\Maxicash\Tests;
 
-use Devscast\Maxicash\Client;
-use Devscast\Maxicash\Credential;
-use Devscast\Maxicash\PaymentEntry;
+use Ngandu\Maxicash\Client;
+use Ngandu\Maxicash\Credential;
+use Ngandu\Maxicash\PaymentEntry;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class ClientTest.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final class ClientTest extends TestCase
 {

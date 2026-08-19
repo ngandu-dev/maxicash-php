@@ -1,19 +1,30 @@
 # Maxicash PHP
 
-![Lint](https://github.com/devscast/maxicash/actions/workflows/lint.yaml/badge.svg)
-![Test](https://github.com/devscast/maxicash/actions/workflows/test.yaml/badge.svg)
-[![Latest Stable Version](https://poser.pugx.org/devscast/maxicash/version)](https://packagist.org/packages/devscast/maxicash)
-[![Total Downloads](https://poser.pugx.org/devscast/maxicash/downloads)](https://packagist.org/packages/devscast/maxicash)
-[![License](https://poser.pugx.org/devscast/maxicash/license)](https://packagist.org/packages/devscast/maxicash)
+[![Latest Stable Version](https://poser.pugx.org/ngandu-dev/maxicash/version)](https://packagist.org/packages/ngandu-dev/maxicash)
+[![Total Downloads](https://poser.pugx.org/ngandu-dev/maxicash/downloads)](https://packagist.org/packages/ngandu-dev/maxicash)
+[![Quality](https://github.com/ngandu-dev/maxicash-php/actions/workflows/quality.yml/badge.svg)](https://github.com/ngandu-dev/maxicash-php/actions/workflows/quality.yml)
+[![Tests](https://github.com/ngandu-dev/maxicash-php/actions/workflows/test.yml/badge.svg)](https://github.com/ngandu-dev/maxicash-php/actions/workflows/test.yml)
+[![License](https://poser.pugx.org/ngandu-dev/maxicash/license)](https://packagist.org/packages/ngandu-dev/maxicash)
 
 
 The MaxiCash Integration Platform enables Merchants to integrate with the MaxiCash platform in order to receive payments through their mobile apps or their websites. The API uses JSON to interact with .Net client or open source platforms like PHP. see more at [Maxicash Documentation](https://developer.maxicashapp.com/Default)
+
+## Features
+
+- Query-string payment URLs
+- Donation URLs for NGOs
+- Sandbox and live environments
+
+## Requirements
+
+- PHP 8.4 or later
+- Composer 2
 
 ## Installation
 You can use the PHP client by installing the Composer package and adding it to your application’s dependencies:
 
 ```bash
-composer require devscast/maxicash
+composer require ngandu-dev/maxicash
 ```
 ## Usage 
 The MaxiCash Gateway enables the Merchant to Collect Payment into their MaxiCash account using multiple payment channels such as Credit Cards, MaxiCash, Paypal, Mobile Money and Mobile Banking.
@@ -26,10 +37,10 @@ You will receive a Merchant Form to complete in order to provide your business d
 
 
 ```php
-use Devscast\Maxicash\Client as Maxicash;
-use Devscast\Maxicash\Credential;
-use Devscast\Maxicash\PaymentEntry;
-use Devscast\Maxicash\Environment;
+use Ngandu\Maxicash\Client as Maxicash;
+use Ngandu\Maxicash\Credential;
+use Ngandu\Maxicash\PaymentEntry;
+use Ngandu\Maxicash\Environment;
 
 $maxicash = new Maxicash(
     credential: new Credential('marchand_id', 'marchand_password'),
@@ -67,8 +78,28 @@ Once you sign up as an NGO Merchant
 $donationUrl = $maxicash->donationUrl()
 ```
 
-## Features supported
-- [x] QueryString URL Payment
-- [x] Donate Button for NGOs
-- [ ] Form Post Payment
-- [ ] Pay Entry Web
+## Development
+
+```bash
+composer install
+composer format
+composer quality
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) before opening an issue or pull request.
+
+## Security
+
+Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+
+## License
+
+Released under the [MIT License](LICENSE).
+
+## Contributors
+
+<a href="https://github.com/ngandu-dev/maxicash-php/graphs/contributors" title="Show all contributors">
+  <img src="https://contrib.rocks/image?repo=ngandu-dev/maxicash-php" alt="Contributors" />
+</a>

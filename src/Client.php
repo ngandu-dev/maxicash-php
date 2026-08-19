@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Maxicash;
+namespace Ngandu\Maxicash;
 
 /**
  * Class Client.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final readonly class Client
 {

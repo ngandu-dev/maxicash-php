@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Maxicash\Data;
+namespace Ngandu\Maxicash\Data;
 
 /**
  * Class Currency.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 enum Currency: string
 {

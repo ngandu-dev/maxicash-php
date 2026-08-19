@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Maxicash\Tests;
+namespace Ngandu\Maxicash\Tests;
 
-use Devscast\Maxicash\Credential;
 use InvalidArgumentException;
+use Ngandu\Maxicash\Credential;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class CredentialTest.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final class CredentialTest extends TestCase
 {

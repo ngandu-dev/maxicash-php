@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Maxicash;
+namespace Ngandu\Maxicash;
 
 /**
  * Class Environment.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 enum Environment: string
 {

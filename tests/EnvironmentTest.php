@@ -1,14 +1,14 @@
 <?php
 
-namespace Devscast\Maxicash\Tests;
+namespace Ngandu\Maxicash\Tests;
 
-use Devscast\Maxicash\Environment;
+use Ngandu\Maxicash\Environment;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class EnvironmentTest.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final class EnvironmentTest extends TestCase
 {
