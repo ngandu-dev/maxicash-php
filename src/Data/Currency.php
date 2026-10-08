@@ -13,4 +13,6 @@ enum Currency: string
 {
     case DOLLAR = 'maxiDollar';
     case RAND = 'maxiRand';
+    case USD = 'USD';
+    case ZAR = 'ZAR';
 }

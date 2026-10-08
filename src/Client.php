@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Ngandu\Maxicash;
 
+use JsonException;
+use Ngandu\Maxicash\Data\Language;
+
 /**
  * Class Client.
  *
@@ -17,12 +20,21 @@ final readonly class Client
     ) {
     }
 
-    public function donationUrl(string $language = 'en'): string
+    /**
+     * @throws JsonException
+     */
+    public function donationUrl(Language|string $language = Language::EN): string
     {
-        return vsprintf(
-            format: '%s/donationentry?data={MerchantID:"%s",Language:"%s"}',
-            values: [$this->environment->getBaseUrl(), $this->credential->merchantId, $language]
+        $language = is_string($language) ? Language::from($language) : $language;
+        $data = sprintf(
+            '{MerchantID:%s,Language:%s}',
+            json_encode($this->credential->merchantId, JSON_THROW_ON_ERROR),
+            json_encode($language->value, JSON_THROW_ON_ERROR)
         );
+
+        return $this->urlWithQuery('/donationentry', [
+            'data' => $data,
+        ]);
     }
 
     public function formPostPayment(): string
@@ -30,18 +42,38 @@ final readonly class Client
         return sprintf('%s/PayEntryPost', $this->environment->getBaseUrl());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function queryStringURLPayment(PaymentEntry $data): string
     {
-        return sprintf('%s/PayEntry?data=%s', $this->environment->getBaseUrl(), $data->get());
+        return $this->urlWithQuery('/PayEntry', [
+            'data' => $data->get(),
+        ]);
     }
 
     public function payEntryWeb(): string
     {
-        return sprintf('%s/Integration/PayEntryWeb', $this->environment->getBaseUrl());
+        return sprintf('%s/Integration/PayEntryWeb', $this->environment->getWebApiBaseUrl());
     }
 
     public function payEntryWebLog(string $id): string
     {
-        return sprintf('%s/payentryweb?logid=%s', $this->environment->getBaseUrl(), $id);
+        return $this->urlWithQuery('/payentryweb', [
+            'logid' => $id,
+        ]);
+    }
+
+    /**
+     * @param array<string, string> $query
+     */
+    private function urlWithQuery(string $path, array $query): string
+    {
+        return sprintf(
+            '%s%s?%s',
+            $this->environment->getBaseUrl(),
+            $path,
+            http_build_query($query, encoding_type: PHP_QUERY_RFC3986)
+        );
     }
 }

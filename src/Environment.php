@@ -21,4 +21,12 @@ enum Environment: string
             self::SANDBOX => 'https://api-testbed.maxicashapp.com',
         };
     }
+
+    public function getWebApiBaseUrl(): string
+    {
+        return match ($this) {
+            self::LIVE => 'https://webapi.maxicashapp.com',
+            self::SANDBOX => 'https://webapi-test.maxicashapp.com',
+        };
+    }
 }

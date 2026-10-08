@@ -24,7 +24,7 @@ final readonly class PaymentEntry
      *                                The Merchant Password works in conjunction with the MerchantID to authenticate the merchant on the platform This parameter is compulsory.
      * @param int         $amount     Amount expected for the transaction. This amount will be reloaded in your MaxiCash Account. This parameter is compulsory.
      *                                Please note that the amounts are expected in Cents. Meaning that if you would like to process a payment of 1 USD,
-     *                                you must send an amount of 10
+     *                                you must send an amount of 100
      * @param string      $reference  This is a transaction reference used by the merchant. This parameter is compulsory.
      * @param string      $acceptUrl  This is the merchant web page that the payer will be redirected to when his payment succeeds. This parameter is compulsory.
      *                                The MaxiCash Gateway will add a few query string parameters described below.
@@ -56,10 +56,18 @@ final readonly class PaymentEntry
         public Currency $currency = Currency::DOLLAR,
         public Language $language = Language::EN
     ) {
-        Assert::greaterThanEq($this->amount, 0, 'Amount must be greater than 0');
+        Assert::positiveInteger($this->amount, 'Amount must be greater than 0');
         Assert::notEmpty($this->reference, 'Reference must not be empty');
-        Assert::notEmpty($this->acceptUrl, 'Accept url must be a valid url');
-        Assert::notEmpty($this->declineUrl, 'Decline url must be a valid url');
+        $this->assertUrl($this->acceptUrl, 'Accept url');
+        $this->assertUrl($this->declineUrl, 'Decline url');
+
+        if ($this->cancelUrl !== null) {
+            $this->assertUrl($this->cancelUrl, 'Cancel url');
+        }
+
+        if ($this->notifyUrl !== null) {
+            $this->assertUrl($this->notifyUrl, 'Notify url');
+        }
     }
 
     /**
@@ -87,28 +95,38 @@ final readonly class PaymentEntry
 
     /**
      * used when gateway is set to HTTP_GET.
-     * notice that is not json encoded.
+     * Notice that the gateway expects an object-like value rather than valid JSON.
+     *
+     * @throws JsonException
      */
     public function get(): string
     {
-        $data = <<< DATA
-            {
-                PayType:"{$this->payType->value}",
-                Amount:"{$this->amount}",
-                Currency:"{$this->currency->value}",
-                Telephone:"{$this->phone}",
-                MerchantID:"{$this->credential->merchantId}",
-                MerchantPassword:"{$this->credential->merchantKey}",
-                Language:"{$this->language->value}",
-                Reference:"{$this->reference}",
-                Accepturl:"{$this->acceptUrl}",
-                Cancelurl:"{$this->cancelUrl}",
-                Declineurl:"{$this->declineUrl}",
-                NotifyURL:"{$this->notifyUrl}"
-            }
-        DATA;
+        $data = [
+            'PayType' => $this->payType->value,
+            'Amount' => (string) $this->amount,
+            'Currency' => $this->currency->value,
+            'Telephone' => $this->phone ?? '',
+            'MerchantID' => $this->credential->merchantId,
+            'MerchantPassword' => $this->credential->merchantKey,
+            'Language' => $this->language->value,
+            'Reference' => $this->reference,
+            'Accepturl' => $this->acceptUrl,
+            'Cancelurl' => $this->cancelUrl ?? $this->declineUrl,
+            'Declineurl' => $this->declineUrl,
+            'NotifyURL' => $this->notifyUrl ?? '',
+        ];
 
-        return trim((string) preg_replace('/\s+/', '', $data));
+        $parameters = [];
+
+        foreach ($data as $name => $value) {
+            $parameters[] = sprintf(
+                '%s:%s',
+                $name,
+                json_encode($value, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES)
+            );
+        }
+
+        return sprintf('{%s}', implode(',', $parameters));
     }
 
     /**
@@ -135,5 +153,16 @@ final readonly class PaymentEntry
         ];
 
         return json_encode($data, JSON_THROW_ON_ERROR);
+    }
+
+    private function assertUrl(string $url, string $name): void
+    {
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+
+        Assert::true(
+            filter_var($url, FILTER_VALIDATE_URL) !== false
+                && in_array($scheme, ['http', 'https'], true),
+            sprintf('%s must be a valid url', $name)
+        );
     }
 }

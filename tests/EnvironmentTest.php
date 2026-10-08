@@ -23,4 +23,16 @@ final class EnvironmentTest extends TestCase
             Environment::SANDBOX->getBaseUrl()
         );
     }
+
+    public function testGetWebApiBaseUrl(): void
+    {
+        $this->assertSame(
+            'https://webapi.maxicashapp.com',
+            Environment::LIVE->getWebApiBaseUrl()
+        );
+        $this->assertSame(
+            'https://webapi-test.maxicashapp.com',
+            Environment::SANDBOX->getWebApiBaseUrl()
+        );
+    }
 }

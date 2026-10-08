@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented in this file. The project follows [Semantic Versioning](https://semver.org/).
 
+## 2.0.2
+
+### Added
+
+- Added support for the documented `USD` and `ZAR` currencies.
+
+### Fixed
+
+- Corrected sandbox and live PayEntryWeb API endpoints.
+- Validated payment amounts and callback URLs before building gateway requests.
+- Escaped gateway payload values and encoded query-string parameters safely.
+- Applied the decline URL as the default cancellation URL consistently.
+
 ## 2.0.1
 
 ### Fixed

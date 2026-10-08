@@ -6,6 +6,8 @@ namespace Ngandu\Maxicash\Tests;
 
 use Ngandu\Maxicash\Client;
 use Ngandu\Maxicash\Credential;
+use Ngandu\Maxicash\Data\Language;
+use Ngandu\Maxicash\Environment;
 use Ngandu\Maxicash\PaymentEntry;
 use PHPUnit\Framework\TestCase;
 
@@ -22,12 +24,17 @@ final class ClientTest extends TestCase
         $client = new Client($credential);
 
         $this->assertEquals(
-            'https://api-testbed.maxicashapp.com/donationentry?data={MerchantID:"merchant_id",Language:"en"}',
+            'https://api-testbed.maxicashapp.com/donationentry?data=%7BMerchantID%3A%22merchant_id%22%2CLanguage%3A%22en%22%7D',
             $client->donationUrl()
         );
 
         $this->assertEquals(
-            'https://api-testbed.maxicashapp.com/donationentry?data={MerchantID:"merchant_id",Language:"fr"}',
+            'https://api-testbed.maxicashapp.com/donationentry?data=%7BMerchantID%3A%22merchant_id%22%2CLanguage%3A%22fr%22%7D',
+            $client->donationUrl(Language::FR)
+        );
+
+        $this->assertSame(
+            $client->donationUrl(Language::FR),
             $client->donationUrl('fr')
         );
     }
@@ -56,10 +63,10 @@ final class ClientTest extends TestCase
             declineUrl: 'https://example.com/cancel',
         );
 
-        $exceptedData = '{PayType:"MaxiCash",Amount:"100",Currency:"maxiDollar",Telephone:"",MerchantID:"merchant_id",MerchantPassword:"merchant_key",Language:"en",Reference:"reference",Accepturl:"https://example.com/accept",Cancelurl:"",Declineurl:"https://example.com/cancel",NotifyURL:""}';
+        $expectedData = '{PayType:"MaxiCash",Amount:"100",Currency:"maxiDollar",Telephone:"",MerchantID:"merchant_id",MerchantPassword:"merchant_key",Language:"en",Reference:"reference",Accepturl:"https://example.com/accept",Cancelurl:"https://example.com/cancel",Declineurl:"https://example.com/cancel",NotifyURL:""}';
 
         $this->assertEquals(
-            'https://api-testbed.maxicashapp.com/PayEntry?data=' . $exceptedData,
+            'https://api-testbed.maxicashapp.com/PayEntry?data=' . rawurlencode($expectedData),
             $client->queryStringURLPayment($paymentEntry)
         );
     }
@@ -70,8 +77,15 @@ final class ClientTest extends TestCase
         $client = new Client($credential);
 
         $this->assertEquals(
-            'https://api-testbed.maxicashapp.com/Integration/PayEntryWeb',
+            'https://webapi-test.maxicashapp.com/Integration/PayEntryWeb',
             $client->payEntryWeb()
+        );
+
+        $liveClient = new Client($credential, Environment::LIVE);
+
+        $this->assertSame(
+            'https://webapi.maxicashapp.com/Integration/PayEntryWeb',
+            $liveClient->payEntryWeb()
         );
     }
 
@@ -83,6 +97,16 @@ final class ClientTest extends TestCase
         $this->assertEquals(
             'https://api-testbed.maxicashapp.com/payentryweb?logid=id',
             $client->payEntryWebLog('id')
+        );
+    }
+
+    public function testPayEntryWebLogEncodesTheIdentifier(): void
+    {
+        $client = new Client(new Credential('merchant_id', 'merchant_key'));
+
+        $this->assertSame(
+            'https://api-testbed.maxicashapp.com/payentryweb?logid=id%26status%3Dpaid',
+            $client->payEntryWebLog('id&status=paid')
         );
     }
 }
