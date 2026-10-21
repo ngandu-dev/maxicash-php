@@ -37,7 +37,10 @@ jobs:
           coverage: none
       - uses: ramsey/composer-install@v3
       - run: composer validate --strict
-      - run: composer quality
+      - name: Run quality checks and tests
+        run: composer quality
+      - name: Audit locked dependencies
+        run: composer audit --locked --no-interaction
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
